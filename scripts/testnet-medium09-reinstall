@@ -1,0 +1,1 @@
+II_ENV=development dfx deploy --network medium09 --mode reinstall --no-wallet --argument '(null)' internet_identity

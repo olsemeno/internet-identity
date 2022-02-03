@@ -24,6 +24,10 @@
     "mainnet": {
       "providers": ["https://identity.ic0.app"],
       "type": "persistent"
+    },
+    "medium09": {
+      "providers": ["http://[2607:fb58:9005:42:5000:73ff:fe41:db8e]:8080"],
+      "type": "persistent"
     }
   },
   "version": 1

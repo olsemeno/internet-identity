@@ -1,0 +1,1 @@
+II_ENV=development dfx deploy --network medium09 --no-wallet --argument '(null)'
