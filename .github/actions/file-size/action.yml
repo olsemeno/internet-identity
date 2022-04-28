@@ -11,14 +11,15 @@ inputs:
 outputs:
   size:
     description: "File size"
-    value: ${{ steps.foo.outputs.size }}
+    value: ${{ steps.run-script.outputs.size }}
 runs:
   using: "composite"
   steps:
     - run: echo "hello, world!"
       shell: bash
-    - id: foo
+    - id: run-script
       run: ${{ github.action_path }}/test.sh
       shell: bash
       env:
         INPUT_FILE: ${{ inputs.file }}
+        INPUT_REF: ${{ inputs.ref }}

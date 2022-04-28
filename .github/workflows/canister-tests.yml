@@ -100,12 +100,12 @@ jobs:
       # needs: docker-build
     steps:
       - uses: actions/checkout@v2
-      - id: foobar
+      - id: record-size
         uses: ./.github/actions/file-size
         with:
           file: ./internet_identity.wasm
       - run: |
-          echo the size is "${{ steps.foobar.outputs.size }}"
+          echo the size is "${{ steps.record-size.outputs.size }}"
 
   #####################
   # The backend tests #
