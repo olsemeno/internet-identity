@@ -1,0 +1,17 @@
+name: 'File Size'
+description: 'Record the file size in git notes'
+inputs:
+  files:
+    description: 'List of files to use'
+    required: true
+  ref:
+    description: 'The git ref to use'
+    required: true
+    default: 'notes/commits'
+runs:
+  using: "composite"
+  steps:
+    - run: echo "hello, world!"
+      shell: bash
+    - run: test.sh
+      shell: bash
