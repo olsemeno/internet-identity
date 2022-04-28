@@ -15,8 +15,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: echo "hello, world!"
-      shell: bash
     - id: run-script
       run: ${{ github.action_path }}/run.sh
       shell: bash
