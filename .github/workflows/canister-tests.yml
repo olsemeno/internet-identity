@@ -97,19 +97,20 @@ jobs:
 
   wasm-size:
     runs-on: ubuntu-latest
-    needs: docker-build
+      # needs: docker-build
     steps:
       - uses: actions/checkout@v2
-      - name: 'Download wasm'
-        uses: actions/download-artifact@v2
-        with:
-          name: internet_identity_production.wasm
-          path: .
+        # - name: 'Download wasm'
+        #   uses: actions/download-artifact@v2
+        #   with:
+        #     name: internet_identity_production.wasm
+        #     path: .
       - id: record-size
         uses: ./.github/actions/file-size
         with:
           file: internet_identity_production.wasm
-          save: ${{ github.ref == 'refs/heads/main' }}
+            #save: ${{ github.ref == 'refs/heads/main' }}
+          save: true
       - name: "Check canister size"
         run: |
           max_size=3670016
