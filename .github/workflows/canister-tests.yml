@@ -104,7 +104,7 @@ jobs:
         uses: ./.github/actions/file-size
         with:
           file: internet_identity.wasm
-          save: true # TODO: only if main brainch
+          save: ${{ github.ref == 'refs/heads/main' }}
       - run: |
           max_size=3670016
           actual_size=${{ steps.record-size.outputs.size }}

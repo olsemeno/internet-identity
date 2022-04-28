@@ -41,7 +41,7 @@ logged() {
 
 if [ "$save" = "true" ]
 then
-    >&2 echo "Saving size to git note"
+    >&2 echo "Saving size to git notes"
     git config user.name "file-size action"
     git config user.email "<>"
 
