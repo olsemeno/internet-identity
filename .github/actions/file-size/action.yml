@@ -1,19 +1,24 @@
 name: 'File Size'
 description: 'Record the file size in git notes'
 inputs:
-  files:
-    description: 'List of files to use'
+  file:
+    description: 'File of which to compute the size'
     required: true
   ref:
     description: 'The git ref to use'
     required: true
     default: 'notes/commits'
+outputs:
+  size:
+    description: "File size"
+    value: ${{ steps.foo.outputs.size }}
 runs:
   using: "composite"
   steps:
     - run: echo "hello, world!"
       shell: bash
-    - run: ${{ github.action_path }}/test.sh
+    - id: foo
+      run: ${{ github.action_path }}/test.sh
       shell: bash
       env:
-        INPUT_FILES: ${{ inputs.files }}
+        INPUT_FILE: ${{ inputs.file }}
