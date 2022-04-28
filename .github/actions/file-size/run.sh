@@ -7,8 +7,6 @@ save=${INPUT_SAVE}
 name="$filename"
 ref="notes/file-size"
 
-echo "SAVE?? $save"
-
 size="$(wc -c <"$filename" | xargs)"
 
 >&2 echo "Size: $size"
@@ -24,13 +22,18 @@ END
 )
 
 jq_args=(
+    # NOTE: can potentially get filter from action input
     --arg name "$name"
-    --arg filename "$INPUT_FILE"
+    --arg filename "$filename"
     --arg size "$size"
+
+    --null-input # TODO
+    --compact-output # TODO
+    --monochrome-output # TODO
 )
 
 out_file=$(mktemp)
-jq "${jq_args[@]}" "$JQ_FILTER" -n -c -M >"$out_file"
+jq "${jq_args[@]}" "$JQ_FILTER" >"$out_file"
 
 >&2 echo "JSON output:"
 >&2 cat "$out_file"
