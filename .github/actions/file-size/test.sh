@@ -2,10 +2,10 @@
 
 echo this is the test!
 
-echo "file: $INPUT_FILES"
+echo "file: '$INPUT_FILES'"
 echo "ref: $INPUT_REF"
 
 while IFS= read -r file; do
     echo "... $file ..."
     wc -c <"$file"
-done <<< "$INTPUT_FILES"
+done < <(printf '%s\n' "$INPUT_FILES")
