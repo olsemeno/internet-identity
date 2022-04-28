@@ -333,7 +333,6 @@ jobs:
   # This uploads the screenshots from both the (non-emulated) 'desktop' and
   # 'mobile' runs.
   upload-screenshots:
-    if: false
     runs-on: ubuntu-latest
 
     # Run after all the tests completed succesfully (and have uploaded their
