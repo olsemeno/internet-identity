@@ -105,12 +105,14 @@ jobs:
         with:
           file: internet_identity.wasm
           save: ${{ github.ref == 'refs/heads/main' }}
-      - run: |
+      - name: "Check canister size"
+        run: |
           max_size=3670016
           actual_size=${{ steps.record-size.outputs.size }}
-          if (( wasm_size > max_size ))
+          if (( actual_size > max_size ))
           then
-            echo OH NO
+            echo "Canister size too big"
+            echo "($actual_size > $max_size)"
             exit 1
           fi
 
