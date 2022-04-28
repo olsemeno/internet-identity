@@ -23,7 +23,7 @@ then
     git config user.email "<>"
 
     logged git fetch origin "refs/$ref:refs/$ref" || echo "could not fetch $ref, assuming doesn't exist yet"
-    logged git notes --ref "$ref" add -m "$size"
+    logged git notes --ref "$ref" add --file <(echo -n "$size")
 
     logged git push origin "refs/$ref"
 fi
