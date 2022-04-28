@@ -406,7 +406,6 @@ jobs:
 
   # This ... releases
   release:
-    if: false
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/release-')
     needs: docker-build
