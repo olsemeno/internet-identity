@@ -4,10 +4,10 @@ inputs:
   file:
     description: 'File of which to compute the size'
     required: true
-  ref:
-    description: 'The git ref to use'
+  save:
+    description: 'Save'
     required: true
-    default: 'notes/commits'
+    default: true
 outputs:
   size:
     description: "File size"
@@ -22,4 +22,4 @@ runs:
       shell: bash
       env:
         INPUT_FILE: ${{ inputs.file }}
-        INPUT_REF: ${{ inputs.ref }}
+        INPUT_SAVE: ${{ inputs.save }}

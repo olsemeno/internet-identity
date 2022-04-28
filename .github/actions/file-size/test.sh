@@ -3,8 +3,11 @@
 set -euo pipefail
 
 filename=${INPUT_FILE:?"No filename provided"}
-name=${INPUT_NAME:-$filename}
-ref=${INPUT_REF:?"No ref provided"}
+save=${INPUT_SAVE}
+name="$filename"
+ref="notes/file-size"
+
+echo "SAVE?? $save"
 
 size="$(wc -c <"$filename" | xargs)"
 

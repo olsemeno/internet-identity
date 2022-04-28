@@ -103,9 +103,16 @@ jobs:
       - id: record-size
         uses: ./.github/actions/file-size
         with:
-          file: ./internet_identity.wasm
+          file: internet_identity.wasm
+          record-size: false
       - run: |
-          echo the size is "${{ steps.record-size.outputs.size }}"
+          max_size=3670016
+          actual_size=${{ steps.record-size.outputs.size }}
+          if (( wasm_size > max_size ))
+          then
+            echo OH NO
+            exit 1
+          fi
 
   #####################
   # The backend tests #
