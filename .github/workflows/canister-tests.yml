@@ -99,6 +99,7 @@ jobs:
     runs-on: ubuntu-latest
       # needs: docker-build
     steps:
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/file-size
         with:
           files: ./internet_identity.wasm
