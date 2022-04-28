@@ -13,5 +13,5 @@ runs:
   steps:
     - run: echo "hello, world!"
       shell: bash
-    - run: test.sh
+    - run: ${{ github.action_path }}/test.sh
       shell: bash
