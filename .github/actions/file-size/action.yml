@@ -15,3 +15,5 @@ runs:
       shell: bash
     - run: ${{ github.action_path }}/test.sh
       shell: bash
+      env:
+        INPUT_FILES: ${{ inputs.files }}
