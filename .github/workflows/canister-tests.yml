@@ -126,7 +126,6 @@ jobs:
   #####################
 
   backend:
-    if: false
     runs-on: ${{ matrix.os }}
     needs: docker-build
     strategy:
@@ -176,7 +175,6 @@ jobs:
   ######################
 
   selenium:
-    if: false
     runs-on: ubuntu-latest
     needs: docker-build
     strategy:
@@ -281,7 +279,6 @@ jobs:
           path: screenshots/**/*.png
 
   using-dev-build:
-    if: false
     runs-on: ubuntu-latest
     needs: docker-build
     env:
