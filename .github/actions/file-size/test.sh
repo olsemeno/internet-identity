@@ -35,6 +35,9 @@ logged() {
     ( set -x && "$@" )
 }
 
+git config user.name "file-size action"
+git config user.email "<>"
+
 logged git fetch origin "refs/$ref:refs/$ref" || echo "could not fetch $ref, assuming doesn't exist yet"
 logged git notes append --file "$out_file"
 rm "$out_file"
