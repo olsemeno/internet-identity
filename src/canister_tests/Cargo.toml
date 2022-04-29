@@ -1,0 +1,16 @@
+[package]
+name = "canister_tests"
+version = "0.1.0"
+edition = "2018"
+
+# TODO: prune deps
+[dependencies]
+ic-cdk = "0.5.0"
+serde_bytes = "0.11"
+#  We need a custom captcha that allows using custom RNGs
+#  https://github.com/dfinity/internet-identity/issues/472
+
+[dev-dependencies]
+# hex-literal = "0.2.1"
+# rand = "0.8.3"
+ic-state-machine-tests = { git = "https://github.com/dfinity/ic", rev = "709f9caaffd39c5d63f7ef1ec694eeb2a1b7976a" }

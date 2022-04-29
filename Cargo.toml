@@ -2,6 +2,7 @@
 members = [
     "src/cubehash",
     "src/internet_identity",
+    "src/canister_tests",
 ]
 
 [profile.release]
