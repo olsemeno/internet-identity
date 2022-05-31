@@ -98,7 +98,7 @@ struct DeviceData {
     credential_id: Option<CredentialId>,
     purpose: Purpose,
     key_type: KeyType,
-    tags: Vec<Tag>,
+    tags: Option<Vec<Tag>>,
 }
 
 /// This is an internal version of `DeviceData` primarily useful to provide a
@@ -122,7 +122,7 @@ impl From<DeviceData> for DeviceDataInternal {
             credential_id: device_data.credential_id,
             purpose: Some(device_data.purpose),
             key_type: Some(device_data.key_type),
-            tags: Some(device_data.tags),
+            tags: device_data.tags,
         }
     }
 }
