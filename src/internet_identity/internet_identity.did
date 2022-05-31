@@ -54,12 +54,17 @@ type Challenge = record {
     challenge_key: ChallengeKey;
 };
 
+type Tag = variant {
+    secured;
+};
+
 type DeviceData = record {
   pubkey : DeviceKey;
   alias : text;
   credential_id : opt CredentialId;
   purpose: Purpose;
   key_type: KeyType;
+  tags: opt vec Tag
 };
 
 type RegisterResponse = variant {
