@@ -14,9 +14,8 @@ use rand_chacha::rand_core::{RngCore, SeedableRng};
 use serde::Serialize;
 use serde_bytes::ByteBuf;
 use std::cell::{Cell, RefCell};
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap};
 use std::convert::TryInto;
-use std::iter::FromIterator;
 use storage::{Salt, Storage};
 
 mod assets;
@@ -601,7 +600,10 @@ async fn add(user_number: UserNumber, device_data: DeviceData) {
         prune_expired_signatures(&s.asset_hashes.borrow(), &mut s.sigs.borrow_mut());
     })
 }
+#[test]
+fn test_signature_lookup() {
 
+}
 #[update]
 async fn remove(user_number: UserNumber, device_key: DeviceKey) {
     ensure_salt_set().await;
@@ -620,7 +622,7 @@ async fn remove(user_number: UserNumber, device_key: DeviceKey) {
         if let Some(i) = entries.iter().position(|e| e.pubkey == device_key) {
             let entry_to_remove = entries.get(i as usize).unwrap();
 
-            if entry_to_remove.tags.is_some() && entry_to_remove.tags.unwrap().as_ref().contains(&Tag::Secured) {
+            if entry_to_remove.tags.is_some() && entry_to_remove.tags.as_ref().unwrap().contains(&Tag::Secured) {
                 if ic_cdk::api::caller() != Principal::self_authenticating(entry_to_remove.pubkey.clone()) {
                     trap("failed to remove secured device");
                 }
