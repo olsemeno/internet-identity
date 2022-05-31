@@ -14,7 +14,7 @@ use rand_chacha::rand_core::{RngCore, SeedableRng};
 use serde::Serialize;
 use serde_bytes::ByteBuf;
 use std::cell::{Cell, RefCell};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::convert::TryInto;
 use storage::{Salt, Storage};
 
@@ -84,6 +84,12 @@ enum KeyType {
     SeedPhrase,
 }
 
+#[derive(Clone, Debug, CandidType, Deserialize, PartialEq)]
+enum Tag {
+    #[serde(rename = "secured")]
+    Secured,
+}
+
 #[derive(Clone, Debug, CandidType, Deserialize)]
 struct DeviceData {
     pubkey: DeviceKey,
@@ -91,6 +97,7 @@ struct DeviceData {
     credential_id: Option<CredentialId>,
     purpose: Purpose,
     key_type: KeyType,
+    tags: HashSet<Tag>
 }
 
 /// This is an internal version of `DeviceData` primarily useful to provide a
@@ -103,6 +110,7 @@ struct DeviceDataInternal {
     credential_id: Option<CredentialId>,
     purpose: Option<Purpose>,
     key_type: Option<KeyType>,
+    tags: Option<HashSet<Tag>>,
 }
 
 impl From<DeviceData> for DeviceDataInternal {
@@ -113,6 +121,7 @@ impl From<DeviceData> for DeviceDataInternal {
             credential_id: device_data.credential_id,
             purpose: Some(device_data.purpose),
             key_type: Some(device_data.key_type),
+            tags: Some(device_data.tags)
         }
     }
 }
@@ -127,6 +136,7 @@ impl From<DeviceDataInternal> for DeviceData {
                 .purpose
                 .unwrap_or(Purpose::Authentication),
             key_type: device_data_internal.key_type.unwrap_or(KeyType::Unknown),
+            tags: device_data_internal.tags.unwrap_or(HashSet::default())
         }
     }
 }
@@ -606,6 +616,13 @@ async fn remove(user_number: UserNumber, device_key: DeviceKey) {
         trap_if_not_authenticated(entries.iter().map(|e| &e.pubkey));
 
         if let Some(i) = entries.iter().position(|e| e.pubkey == device_key) {
+            let entry_to_remove = entries.get(i as usize).unwrap();
+
+            if entry_to_remove.tags.is_some() && entry_to_remove.tags.unwrap().contains(&Tag::Secured) {
+                if ic_cdk::api::caller() != Principal::self_authenticating(entry_to_remove.pubkey.clone()) {
+                    trap("failed to remove secured device");
+                }
+            }
             entries.swap_remove(i as usize);
         }
 
