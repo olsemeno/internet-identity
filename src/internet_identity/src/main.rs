@@ -620,7 +620,7 @@ async fn remove(user_number: UserNumber, device_key: DeviceKey) {
         if let Some(i) = entries.iter().position(|e| e.pubkey == device_key) {
             let entry_to_remove = entries.get(i as usize).unwrap();
 
-            if entry_to_remove.tags.is_some() && entry_to_remove.tags.unwrap().contains(&Tag::Secured) {
+            if entry_to_remove.tags.is_some() && entry_to_remove.tags.unwrap().as_ref().contains(&Tag::Secured) {
                 if ic_cdk::api::caller() != Principal::self_authenticating(entry_to_remove.pubkey.clone()) {
                     trap("failed to remove secured device");
                 }
