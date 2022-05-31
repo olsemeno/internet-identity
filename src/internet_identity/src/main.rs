@@ -137,7 +137,7 @@ impl From<DeviceDataInternal> for DeviceData {
                 .purpose
                 .unwrap_or(Purpose::Authentication),
             key_type: device_data_internal.key_type.unwrap_or(KeyType::Unknown),
-            tags: device_data_internal.tags.unwrap_or(Vec::default()),
+            tags: device_data_internal.tags,
         }
     }
 }
