@@ -27,6 +27,7 @@ const fn secs_to_nanos(secs: u64) -> u64 {
 
 #[cfg(not(feature = "dummy_captcha"))]
 use captcha::filters::Wave;
+use crate::KeyType::SeedPhrase;
 
 // 30 mins
 const DEFAULT_EXPIRATION_PERIOD_NS: u64 = secs_to_nanos(30 * 60);
@@ -618,7 +619,8 @@ async fn remove(user_number: UserNumber, device_key: DeviceKey) {
         if let Some(i) = entries.iter().position(|e| e.pubkey == device_key) {
             let entry_to_remove = entries.get(i as usize).unwrap();
 
-            if entry_to_remove.tags.is_some() && entry_to_remove.tags.as_ref().unwrap().contains(&Tag::Protected) {
+            if entry_to_remove.key_type.unwrap() == &KeyType::SeedPhrase && entry_to_remove.tags.is_some()
+                && entry_to_remove.tags.as_ref().unwrap().contains(&Tag::Protected) {
                 if caller() != Principal::self_authenticating(entry_to_remove.pubkey.clone()) {
                     trap("failed to remove protected recovery phrase");
                 }
@@ -1191,7 +1193,7 @@ fn trap_if_not_authenticated<'a>(public_keys: impl Iterator<Item = &'a PublicKey
     ic_cdk::trap(&format!("{} could not be authenticated.", caller()))
 }
 
-fn check_entry_limits(device_data: &DeviceData) {
+fn  check_entry_limits(device_data: &DeviceData) {
     const ALIAS_LEN_LIMIT: usize = 64;
     const PK_LEN_LIMIT: usize = 300;
     const CREDENTIAL_ID_LEN_LIMIT: usize = 200;
