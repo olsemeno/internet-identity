@@ -271,6 +271,14 @@ device2 = empty
     .+ #purpose .== enum #authentication
     .+ #key_type .== enum #platform
 
+device3 :: DeviceData
+device3 = empty
+    .+ #alias .== "recovery"
+    .+ #pubkey .== webauth1PK
+    .+ #credential_id .== Nothing
+    .+ #purpose .== enum #recovery
+    .+ #key_type .== enum #seed_phrase_protected
+
 anonymousID :: EntityId
 anonymousID = EntityId "\x04"
 
@@ -734,6 +742,15 @@ tests wasm_file = testGroup "Tests" $ upgradeGroups $
     when should_upgrade $ doUpgrade cid
     when (user_number == user_number2) $
       lift $ assertFailure "Identity Anchor re-used"
+
+  , withUpgrade $ \should_upgrade -> iiTest "remove protected()" $ \cid -> do
+    user_number <- register cid webauth1ID device3 >>= mustGetUserNumber
+    callII cid webauth1ID #add (user_number, device2)
+    lookupIs cid user_number [device3, device2]
+    callIIRejectWith cid webauth2ID #remove (user_number, webauth1PK) "[a-z0-9-]+ failed to remove protected recovery phrase"
+    when should_upgrade $ doUpgrade cid
+    callIIRejectWith cid webauth1ID #remove (user_number, webauth1PK)
+    lookupIs cid user_number [device2]
 
   , withUpgrade $ \should_upgrade -> iiTestWithInit "init range" (100, 103) $ \cid -> do
     s <- queryII cid dummyUserId #stats ()

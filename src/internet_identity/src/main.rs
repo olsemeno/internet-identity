@@ -72,7 +72,7 @@ enum Purpose {
     Authentication,
 }
 
-#[derive(Clone, Debug, CandidType, Deserialize)]
+#[derive(Clone, Debug, CandidType, Deserialize, PartialEq)]
 enum KeyType {
     #[serde(rename = "unknown")]
     Unknown,
@@ -82,6 +82,8 @@ enum KeyType {
     CrossPlatform,
     #[serde(rename = "seed_phrase")]
     SeedPhrase,
+    #[serde(rename = "seed_phrase_protected")]
+    SeedPhraseProtected,
 }
 
 #[derive(Clone, Debug, CandidType, Deserialize)]
@@ -606,6 +608,14 @@ async fn remove(user_number: UserNumber, device_key: DeviceKey) {
         trap_if_not_authenticated(entries.iter().map(|e| &e.pubkey));
 
         if let Some(i) = entries.iter().position(|e| e.pubkey == device_key) {
+            let entry_to_remove = entries.get(i as usize).unwrap();
+
+            if entry_to_remove.key_type.is_some() && entry_to_remove.key_type.as_ref().unwrap() == &KeyType::SeedPhraseProtected {
+                if caller() != Principal::self_authenticating(entry_to_remove.pubkey.clone()) {
+                    trap("failed to remove protected recovery phrase");
+                }
+            }
+
             entries.swap_remove(i as usize);
         }
 

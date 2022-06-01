@@ -47,6 +47,7 @@ type KeyType = variant {
     platform;
     cross_platform;
     seed_phrase;
+    seed_phrase_protected;
 };
 
 type Challenge = record {

@@ -15,7 +15,7 @@ Running
 -------
 
 
- * Build the top-level directory, build the backend canister (`dfx build internet_identity`)
+ * Build the top-level directory, build the backend canister (`II_DUMMY_CAPTCHA=1 II_DUMMY_AUTH=1 dfx build internet_identity`)
  * In the present directory, run
    ```
    cabal run -v0 backend-tests --
