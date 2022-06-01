@@ -255,6 +255,7 @@ device1 = empty
     .+ #credential_id .== Nothing
     .+ #purpose .== enum #authentication
     .+ #key_type .== enum #cross_platform
+    .+ #protection_type .== Nothing
 
 webauth2SK :: SecretKey
 webauth2SK = createSecretKeyWebAuthnRSA "foobar2"
@@ -270,6 +271,7 @@ device2 = empty
     .+ #credential_id .== Just "foobar"
     .+ #purpose .== enum #authentication
     .+ #key_type .== enum #platform
+    .+ #protection_type .== Nothing
 
 device3 :: DeviceData
 device3 = empty
