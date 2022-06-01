@@ -84,6 +84,12 @@ enum KeyType {
     SeedPhrase,
 }
 
+#[derive(Clone, Debug, CandidType, Deserialize, PartialEq)]
+enum ProtectionType {
+    #[serde(rename = "protected")]
+    Protected,
+}
+
 #[derive(Clone, Debug, CandidType, Deserialize)]
 struct DeviceData {
     pubkey: DeviceKey,
@@ -91,6 +97,7 @@ struct DeviceData {
     credential_id: Option<CredentialId>,
     purpose: Purpose,
     key_type: KeyType,
+    protection_type: Option<ProtectionType>
 }
 
 /// This is an internal version of `DeviceData` primarily useful to provide a
@@ -103,6 +110,7 @@ struct DeviceDataInternal {
     credential_id: Option<CredentialId>,
     purpose: Option<Purpose>,
     key_type: Option<KeyType>,
+    protection_type: Option<ProtectionType>
 }
 
 impl From<DeviceData> for DeviceDataInternal {
@@ -113,6 +121,7 @@ impl From<DeviceData> for DeviceDataInternal {
             credential_id: device_data.credential_id,
             purpose: Some(device_data.purpose),
             key_type: Some(device_data.key_type),
+            protection_type: device_data.protection_type
         }
     }
 }
@@ -127,6 +136,7 @@ impl From<DeviceDataInternal> for DeviceData {
                 .purpose
                 .unwrap_or(Purpose::Authentication),
             key_type: device_data_internal.key_type.unwrap_or(KeyType::Unknown),
+            protection_type: device_data_internal.protection_type
         }
     }
 }
@@ -606,6 +616,14 @@ async fn remove(user_number: UserNumber, device_key: DeviceKey) {
         trap_if_not_authenticated(entries.iter().map(|e| &e.pubkey));
 
         if let Some(i) = entries.iter().position(|e| e.pubkey == device_key) {
+            let entry_to_remove = entries.get(i as usize).unwrap();
+
+            if entry_to_remove.protection_type.is_some() && entry_to_remove.protection_type.as_ref().unwrap() == &ProtectionType::Protected {
+                if caller() != Principal::self_authenticating(entry_to_remove.pubkey.clone()) {
+                    trap("failed to remove protected recovery phrase");
+                }
+            }
+
             entries.swap_remove(i as usize);
         }
 
