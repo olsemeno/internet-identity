@@ -485,7 +485,7 @@ tests wasm_file = testGroup "Tests" $ upgradeGroups $
     user_number <- register cid webauth1ID device3 >>= mustGetUserNumber
     callII cid webauth1ID #add (user_number, device2)
     lookupIs cid user_number [device3, device2]
-    callIIRejectWith cid webauth2ID #remove (user_number, webauth1PK) "[a-z0-9-]+ failed to remove protected recovery phrase"
+    callIIRejectWith cid webauth2ID #remove (user_number, webauth1PK) "failed to remove protected recovery phrase"
     when should_upgrade $ doUpgrade cid
     callII cid webauth1ID #remove (user_number, webauth1PK)
     lookupIs cid user_number [device2]
