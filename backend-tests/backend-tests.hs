@@ -481,14 +481,6 @@ tests wasm_file = testGroup "Tests" $ upgradeGroups $
     return ()
   , withoutUpgrade $ iiTest "installs and upgrade" $ \ cid ->
     doUpgrade cid
-  , withUpgrade $ \should_upgrade -> iiTest "remove_protected" $ \cid -> do
-    user_number <- register cid webauth1ID device3 >>= mustGetUserNumber
-    callII cid webauth1ID #add (user_number, device2)
-    lookupIs cid user_number [device3, device2]
-    callIIRejectWith cid webauth2ID #remove (user_number, webauth1PK) "failed to remove protected recovery phrase"
-    when should_upgrade $ doUpgrade cid
-    callII cid webauth1ID #remove (user_number, webauth1PK)
-    lookupIs cid user_number [device2]
   , withoutUpgrade $ iiTest "register with wrong user fails" $ \cid -> do
     challenge <- getChallenge cid dummyUserId
     callIIRejectWith cid dummyUserId #register (device1, challenge) "[a-z0-9-]+ could not be authenticated against"
@@ -751,11 +743,11 @@ tests wasm_file = testGroup "Tests" $ upgradeGroups $
     when (user_number == user_number2) $
       lift $ assertFailure "Identity Anchor re-used"
 
-  , withUpgrade $ \should_upgrade -> iiTest "remove protected()" $ \cid -> do
+  , withUpgrade $ \should_upgrade -> iiTest "remove_protected" $ \cid -> do
     user_number <- register cid webauth1ID device3 >>= mustGetUserNumber
     callII cid webauth1ID #add (user_number, device2)
     lookupIs cid user_number [device3, device2]
-    callIIRejectWith cid webauth2ID #remove (user_number, webauth1PK) "[a-z0-9-]+ failed to remove protected recovery phrase"
+    callIIRejectWith cid webauth2ID #remove (user_number, webauth1PK) "failed to remove protected recovery phrase"
     when should_upgrade $ doUpgrade cid
     callII cid webauth1ID #remove (user_number, webauth1PK)
     lookupIs cid user_number [device2]
