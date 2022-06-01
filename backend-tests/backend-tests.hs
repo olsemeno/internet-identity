@@ -848,7 +848,7 @@ tests wasm_file = testGroup "Tests" $ upgradeGroups $
     -- This user record has been created manullay with dfx and our test
     -- webauth1PK has been added, so that we can actually log into this now
     let dfxPK =  "0*0\ENQ\ACK\ETX+ep\ETX!\NUL\241\186;\128\206$\243\130\250\&2\253\a#<\235\142\&0]W\218\254j\211\209\192\SO@\DC3\NAKi&1"
-    lookupIs cid 10_030 [#alias .== "dfx" .+ #credential_id .== Nothing .+ #pubkey .== dfxPK .+ #purpose .== enum #authentication .+ #key_type .== enum #unknown,#alias .== "testkey" .+ #credential_id .== Nothing .+ #pubkey .== webauth1PK .+ #purpose .== enum #authentication .+ #key_type .== enum #unknown]
+    lookupIs cid 10_030 [#alias .== "dfx" .+ #credential_id .== Nothing .+ #pubkey .== dfxPK .+ #purpose .== enum #authentication .+ #key_type .== enum #unknown,#alias .== "testkey" .+ #credential_id .== Nothing .+ #pubkey .== webauth1PK .+ #purpose .== enum #authentication .+ #key_type .== enum #unknown.+ #protection_type .== enum #protected]
     callII cid webauth1ID #remove (10_030, dfxPK)
     lookupIs cid 10_030 [#alias .== "testkey" .+ #credential_id .== Nothing .+ #pubkey .== webauth1PK .+ #purpose .== enum #authentication .+ #key_type .== enum #unknown]
     let delegationArgs = (10_030, "example.com", "dummykey", Nothing)
