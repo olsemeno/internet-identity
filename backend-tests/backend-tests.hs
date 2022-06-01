@@ -749,7 +749,7 @@ tests wasm_file = testGroup "Tests" $ upgradeGroups $
     lookupIs cid user_number [device3, device2]
     callIIRejectWith cid webauth2ID #remove (user_number, webauth1PK) "[a-z0-9-]+ failed to remove protected recovery phrase"
     when should_upgrade $ doUpgrade cid
-    callIIRejectWith cid webauth1ID #remove (user_number, webauth1PK)
+    callII cid webauth1ID #remove (user_number, webauth1PK)
     lookupIs cid user_number [device2]
 
   , withUpgrade $ \should_upgrade -> iiTestWithInit "init range" (100, 103) $ \cid -> do
