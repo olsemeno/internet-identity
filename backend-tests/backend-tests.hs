@@ -280,7 +280,7 @@ device3 = empty
     .+ #credential_id .== Nothing
     .+ #purpose .== enum #recovery
     .+ #key_type .== enum #seed_phrase
-    .+ #protection_type .== Candid.encode (Just ( enum #protected))
+--    .+ #protection_type .== Candid.encode (Just ( enum #protected))
 
 anonymousID :: EntityId
 anonymousID = EntityId "\x04"
