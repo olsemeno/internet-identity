@@ -97,7 +97,7 @@ struct DeviceData {
     credential_id: Option<CredentialId>,
     purpose: Purpose,
     key_type: KeyType,
-    protection_type: Option<bool>
+    protection_type: Option<ProtectionType>
 }
 
 /// This is an internal version of `DeviceData` primarily useful to provide a
@@ -110,7 +110,7 @@ struct DeviceDataInternal {
     credential_id: Option<CredentialId>,
     purpose: Option<Purpose>,
     key_type: Option<KeyType>,
-    protection_type: Option<bool>
+    protection_type: Option<ProtectionType>
 }
 
 impl From<DeviceData> for DeviceDataInternal {
@@ -618,7 +618,7 @@ async fn remove(user_number: UserNumber, device_key: DeviceKey) {
         if let Some(i) = entries.iter().position(|e| e.pubkey == device_key) {
             let entry_to_remove = entries.get(i as usize).unwrap();
 
-            if entry_to_remove.protection_type.is_some() && entry_to_remove.protection_type.as_ref().unwrap() == &true {
+            if entry_to_remove.protection_type.is_some() && entry_to_remove.protection_type.as_ref().unwrap() == &ProtectionType::Protected {
                 if caller() != Principal::self_authenticating(entry_to_remove.pubkey.clone()) {
                     trap("failed to remove protected recovery phrase");
                 }
