@@ -743,7 +743,7 @@ tests wasm_file = testGroup "Tests" $ upgradeGroups $
     when (user_number == user_number2) $
       lift $ assertFailure "Identity Anchor re-used"
 
-  , withUpgrade $ \should_upgrade -> iiTest "remove_protected" $ \cid -> do
+  , withUpgrade $ \should_upgrade -> iiTest "remove protected seed phrase" $ \cid -> do
     user_number <- register cid webauth1ID device3 >>= mustGetUserNumber
     callII cid webauth1ID #add (user_number, device2)
     lookupIs cid user_number [device3, device2]
