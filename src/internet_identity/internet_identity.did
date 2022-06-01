@@ -64,7 +64,7 @@ type DeviceData = record {
   credential_id : opt CredentialId;
   purpose: Purpose;
   key_type: KeyType;
-  protection_type: opt bool;
+
 };
 
 type RegisterResponse = variant {
