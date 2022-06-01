@@ -49,6 +49,10 @@ type KeyType = variant {
     seed_phrase;
 };
 
+type Tag = variant {
+    protected;
+};
+
 type Challenge = record {
     png_base64: text;
     challenge_key: ChallengeKey;
@@ -60,6 +64,7 @@ type DeviceData = record {
   credential_id : opt CredentialId;
   purpose: Purpose;
   key_type: KeyType;
+  tags: opt vec Tag;
 };
 
 type RegisterResponse = variant {
