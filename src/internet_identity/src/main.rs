@@ -577,15 +577,16 @@ async fn add(user_number: UserNumber, device_data: DeviceData) {
         trap_if_not_authenticated(entries.iter().map(|e| &e.pubkey));
 
         let is_protected_recovery_device = device_data.key_type.eq(&KeyType::SeedPhrase)
-            && device_data.protection_type.is_some() && device_data.protection_type.eq(&ProtectionType::Protected);
+            && device_data.protection_type.is_some() && device_data.protection_type.as_ref().unwrap().eq(&ProtectionType::Protected);
 
         for e in entries.iter_mut() {
             if e.pubkey == device_data.pubkey {
                 trap("Device already added.");
             }
             if is_protected_recovery_device {
-                if  e.protection_type.is_some() && e.protection_type.eq(&ProtectionType::Protected) {
-                    trap("Device already protected");
+                if e.key_type.is_some() && e.key_type.as_ref().unwrap().eq(&KeyType::SeedPhrase)
+                    && e.protection_type.is_some() && e.protection_type.as_ref().unwrap().eq(&ProtectionType::Protected) {
+                    trap("Recovery mechanism already protected");
                 }
             }
         }
