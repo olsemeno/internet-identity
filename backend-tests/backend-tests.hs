@@ -498,19 +498,6 @@ tests :: FilePath -> TestTree
 tests wasm_file = testGroup "Tests" $ upgradeGroups $
   [ withoutUpgrade $ iiTest "installs" $ \ _cid ->
     return ()
-
-  , withUpgrade $ \should_upgrade -> iiTest "remove protected seed phrase 2" $ \cid -> do
-    user_number <- register cid webauth3ID device3 >>= mustGetUserNumber
-    callII cid webauth3ID #add (user_number, device2)
-    lookupIs cid user_number [device3, device2]
-    callIIRejectWith cid webauth2ID #remove (user_number, webauth3PK) "failed to remove protected recovery phrase"
-    callIIRejectWith cid webauth3ID #add (user_number, device4) "recovery mechanism already protected"
-    when should_upgrade $ doUpgrade cid
-    callII cid webauth3ID #remove (user_number, webauth3PK)
-    lookupIs cid user_number [device2]
-    callII cid webauth2ID #add (user_number, device4)
-    lookupIs cid user_number [device2, device4]
-
   , withoutUpgrade $ iiTest "installs and upgrade" $ \ cid ->
     doUpgrade cid
   , withoutUpgrade $ iiTest "register with wrong user fails" $ \cid -> do
@@ -776,13 +763,16 @@ tests wasm_file = testGroup "Tests" $ upgradeGroups $
       lift $ assertFailure "Identity Anchor re-used"
 
   , withUpgrade $ \should_upgrade -> iiTest "remove protected seed phrase" $ \cid -> do
-    user_number <- register cid webauth1ID device3 >>= mustGetUserNumber
-    callII cid webauth1ID #add (user_number, device2)
+    user_number <- register cid webauth3ID device3 >>= mustGetUserNumber
+    callII cid webauth3ID #add (user_number, device2)
     lookupIs cid user_number [device3, device2]
-    callIIRejectWith cid webauth2ID #remove (user_number, webauth1PK) "failed to remove protected recovery phrase"
+    callIIRejectWith cid webauth2ID #remove (user_number, webauth3PK) "failed to remove protected recovery phrase"
+    callIIRejectWith cid webauth3ID #add (user_number, device4) "recovery mechanism already protected"
     when should_upgrade $ doUpgrade cid
-    callII cid webauth1ID #remove (user_number, webauth1PK)
+    callII cid webauth3ID #remove (user_number, webauth3PK)
     lookupIs cid user_number [device2]
+    callII cid webauth2ID #add (user_number, device4)
+    lookupIs cid user_number [device2, device4]
 
   , withUpgrade $ \should_upgrade -> iiTestWithInit "init range" (100, 103) $ \cid -> do
     s <- queryII cid dummyUserId #stats ()
