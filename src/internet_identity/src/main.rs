@@ -590,7 +590,7 @@ async fn add(user_number: UserNumber, device_data: DeviceData) {
                     None => {}
                     Some(_) => {
                         if e.key_type.is_some() && e.key_type.as_ref().unwrap().eq(&KeyType::SeedPhrase) {
-                            trap("Recovery mechanism already protected");
+                            trap("recovery mechanism already protected");
                         }
                     }
                 }
