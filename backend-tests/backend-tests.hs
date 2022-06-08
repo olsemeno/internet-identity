@@ -508,7 +508,7 @@ tests wasm_file = testGroup "Tests" $ upgradeGroups $
     when should_upgrade $ doUpgrade cid
     callII cid webauth3ID #remove (user_number, webauth3PK)
     lookupIs cid user_number [device2]
-    callII cid webauth1ID #add (user_number, device4)
+    callII cid webauth2ID #add (user_number, device4)
     lookupIs cid user_number [device2, device4]
 
   , withoutUpgrade $ iiTest "installs and upgrade" $ \ cid ->
