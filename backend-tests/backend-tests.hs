@@ -272,8 +272,8 @@ device2 = empty
     .+ #key_type .== enum #platform
 
 device3 :: DeviceData
-device2 = empty
-    .+ #alias .== "device2"
+device3 = empty
+    .+ #alias .== "device3"
     .+ #pubkey .== webauth2PK
     .+ #credential_id .== Just "foobar"
     .+ #purpose .== enum #authentication
