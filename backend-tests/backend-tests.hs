@@ -850,7 +850,7 @@ tests wasm_file = testGroup "Tests" $ upgradeGroups $
     let dfxPK =  "0*0\ENQ\ACK\ETX+ep\ETX!\NUL\241\186;\128\206$\243\130\250\&2\253\a#<\235\142\&0]W\218\254j\211\209\192\SO@\DC3\NAKi&1"
     lookupIs cid 10_030 [#protection_type .== Nothing .+ #alias .== "dfx" .+ #credential_id .== Nothing .+ #pubkey .== dfxPK .+ #purpose .== enum #authentication .+ #key_type .== enum #unknown,#alias .== "testkey" .+ #credential_id .== Nothing .+ #pubkey .== webauth1PK .+ #purpose .== enum #authentication .+ #key_type .== enum #unknown .+ #protection_type .== Nothing]
     callII cid webauth1ID #remove (10_030, dfxPK)
-    lookupIs cid 10_030 [#protection_type .== Nothing .+ #alias .== "testkey" .+ #credential_id .== Nothing .+ #pubkey .== webauth1PK .+ #purpose .== enum #authentication .+ #key_type .== enum #unknown .+ #protection_type .== Nothing]
+    lookupIs cid 10_030 [#alias .== "testkey" .+ #credential_id .== Nothing .+ #pubkey .== webauth1PK .+ #purpose .== enum #authentication .+ #key_type .== enum #unknown .+ #protection_type .== Nothing]
     let delegationArgs = (10_030, "example.com", "dummykey", Nothing)
     (userPK,_) <- callII cid webauth1ID #prepare_delegation delegationArgs
     -- Check that we get the same user key; this proves that the salt was
