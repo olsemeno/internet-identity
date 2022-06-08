@@ -271,7 +271,8 @@ device2 = empty
     .+ #credential_id .== Just "foobar"
     .+ #purpose .== enum #authentication
     .+ #protection_type .== Nothing
-    .+ #key_type .== enum #platfor
+    .+ #key_type .== enum #platform
+
 webauth3SK :: SecretKey
 webauth3SK = createSecretKeyWebAuthnRSA "foobar3"
 webauth3PK = toPublicKey webauth3SK
@@ -503,6 +504,7 @@ tests wasm_file = testGroup "Tests" $ upgradeGroups $
     callII cid webauth3ID #add (user_number, device2)
     lookupIs cid user_number [device3, device2]
     callIIRejectWith cid webauth2ID #remove (user_number, webauth1PK) "failed to remove protected recovery phrase"
+    callIIRejectWith cid webauth3ID #add (user_number, device4) "Recovery mechanism already protected"
     when should_upgrade $ doUpgrade cid
     callII cid webauth3ID #remove (user_number, webauth1PK)
     lookupIs cid user_number [device2]
