@@ -634,8 +634,8 @@ async fn remove(user_number: UserNumber, device_key: DeviceKey) {
         if let Some(i) = entries.iter().position(|e| e.pubkey == device_key) {
             let entry_to_remove = entries.get(i as usize).unwrap();
 
-            if entry_to_remove.key_type.as_ref().unwrap() == &KeyType::SeedPhrase && entry_to_remove.protection_type.is_some()
-                && entry_to_remove.protection_type.as_ref().unwrap() == &ProtectionType::Protected {
+            if entry_to_remove.key_type.is_some() && entry_to_remove.key_type.as_ref().unwrap() == &KeyType::SeedPhrase
+                && entry_to_remove.protection_type.is_some() && entry_to_remove.protection_type.as_ref().unwrap() == &ProtectionType::Protected {
                 if caller() != Principal::self_authenticating(entry_to_remove.pubkey.clone()) {
                     trap("failed to remove protected recovery phrase");
                 }
