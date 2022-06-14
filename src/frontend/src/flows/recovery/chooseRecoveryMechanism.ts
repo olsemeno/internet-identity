@@ -11,6 +11,7 @@ const pageContent = (devices: DeviceData[]) => html`
     }
     .recoveryContainer {
       display: flex;
+      flex-direction: column;
       gap: 1rem;
       margin-top: 1rem;
     }
@@ -62,10 +63,23 @@ const pageContent = (devices: DeviceData[]) => html`
         ?disabled=${hasRecoveryPhrase(devices)}
         class="recoveryOption"
         id="seedPhrase"
+        title="This seed phrase option allows anyone with access to any of your devices to remove the seed phrase without entering it as confirmation"
       >
         <span class="recoveryIcon">${seedPhraseIcon}</span>
         <div class="recoveryTitle">Seed Phrase</div>
         <div class="recoveryDescription">Use your own storage</div>
+      </button>
+      <button
+        ?disabled=${hasRecoveryPhrase(devices)}
+        class="recoveryOption"
+        id="seedPhraseProtected"
+        title="This seed phrase option requires entering the seed phrase as confirmation to remove it"
+      >
+        <span class="recoveryIcon">${seedPhraseIcon}</span>
+        <div class="recoveryTitle">Protected Seed Phrase</div>
+        <div class="recoveryDescription">
+          Use your own storage, extra protection against seed phrase removal
+        </div>
       </button>
       <button
         ?disabled=${hasRecoveryKey(devices)}
@@ -81,7 +95,10 @@ const pageContent = (devices: DeviceData[]) => html`
   </div>
 `;
 
-export type RecoveryMechanism = "securityKey" | "seedPhrase";
+export type RecoveryMechanism =
+  | "securityKey"
+  | "seedPhrase"
+  | "seedPhraseProtected";
 
 export const chooseRecoveryMechanism = async (
   devices: DeviceData[]
@@ -99,11 +116,15 @@ const init = (): Promise<RecoveryMechanism | null> =>
     const seedPhrase = document.getElementById(
       "seedPhrase"
     ) as HTMLButtonElement;
+    const seedPhraseProtected = document.getElementById(
+      "seedPhraseProtected"
+    ) as HTMLButtonElement;
     const skipRecovery = document.getElementById(
       "skipRecovery"
     ) as HTMLButtonElement;
     securityKey.onclick = () => resolve("securityKey");
     seedPhrase.onclick = () => resolve("seedPhrase");
+    seedPhraseProtected.onclick = () => resolve("seedPhraseProtected");
     skipRecovery.onclick = () => resolve(null);
   });
 
