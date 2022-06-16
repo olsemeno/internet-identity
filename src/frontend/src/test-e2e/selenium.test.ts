@@ -348,7 +348,9 @@ test("Remove protected recovery phrase", async () => {
     await FLOWS.registerNewIdentity(DEVICE_NAME1, browser);
     const mainView = new MainView(browser);
     await mainView.waitForDeviceDisplay(DEVICE_NAME1);
-    const seedPhrase = await FLOWS.addRecoveryMechanismSeedPhraseProtected(browser);
+    const seedPhrase = await FLOWS.addRecoveryMechanismSeedPhraseProtected(
+      browser
+    );
     await mainView.waitForDisplay();
     await mainView.removeDevice("Recovery phrase");
 
@@ -387,13 +389,17 @@ test("Remove protected recovery phrase, confirm with invalid seed phrase", async
     await FLOWS.registerNewIdentity(DEVICE_NAME1, browser);
     const mainView = new MainView(browser);
     await mainView.waitForDeviceDisplay(DEVICE_NAME1);
-    const seedPhrase = await FLOWS.addRecoveryMechanismSeedPhraseProtected(browser);
+    const seedPhrase = await FLOWS.addRecoveryMechanismSeedPhraseProtected(
+      browser
+    );
     await mainView.waitForDisplay();
     await mainView.removeDevice("Recovery phrase");
 
     const recoveryView = new RecoverView(browser);
     await recoveryView.waitForSeedInputDisplay();
-    await recoveryView.enterSeedPhrase(seedPhrase.split(' ').reverse().join(' '));
+    await recoveryView.enterSeedPhrase(
+      seedPhrase.split(" ").reverse().join(" ")
+    );
     await recoveryView.enterSeedPhraseContinue();
     await recoveryView.waitForInvalidSeedPhraseDisplay();
   });
@@ -412,7 +418,9 @@ test("Remove protected recovery phrase, confirm with valid yet incorrect seed ph
 
     const recoveryView = new RecoverView(browser);
     await recoveryView.waitForSeedInputDisplay();
-    await recoveryView.enterSeedPhrase("10000 enhance scorpion tool pill anchor interest vanish describe nuclear latin mimic tired claw clarify three economy mistake duck robot miss response public food absurd");
+    await recoveryView.enterSeedPhrase(
+      "10000 enhance scorpion tool pill anchor interest vanish describe nuclear latin mimic tired claw clarify three economy mistake duck robot miss response public food absurd"
+    );
     await recoveryView.enterSeedPhraseContinue();
     await mainView.waitForDeviceDisplay(DEVICE_NAME1);
     await mainView.waitForDeviceDisplay("Recovery phrase");

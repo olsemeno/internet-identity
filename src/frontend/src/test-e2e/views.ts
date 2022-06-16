@@ -166,7 +166,10 @@ export class MainView extends View {
       .waitForDisplayed({ timeout: 10_000 });
   }
 
-  async waitForDeviceNotDisplay(deviceName: string, wait: number = 0): Promise<void> {
+  async waitForDeviceNotDisplay(
+    deviceName: string,
+    wait: number = 0
+  ): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, wait));
     const selector = `//div[string()='${deviceName}']`;
     const result = await this.browser.$(selector);
