@@ -63,7 +63,6 @@ const pageContent = (devices: DeviceData[]) => html`
         ?disabled=${hasRecoveryPhrase(devices)}
         class="recoveryOption"
         id="seedPhrase"
-        title="This seed phrase option allows anyone with access to any of your devices to remove the seed phrase without entering it as confirmation"
       >
         <span class="recoveryIcon">${seedPhraseIcon}</span>
         <div class="recoveryTitle">Seed Phrase</div>
@@ -73,12 +72,11 @@ const pageContent = (devices: DeviceData[]) => html`
         ?disabled=${hasRecoveryPhrase(devices)}
         class="recoveryOption"
         id="seedPhraseProtected"
-        title="This seed phrase option requires entering the seed phrase as confirmation to remove it"
       >
         <span class="recoveryIcon">${seedPhraseIcon}</span>
         <div class="recoveryTitle">Protected Seed Phrase</div>
         <div class="recoveryDescription">
-          Use your own storage, extra protection against seed phrase removal
+          Use your own storage, removal requires seed phrase confirmation
         </div>
       </button>
       <button
